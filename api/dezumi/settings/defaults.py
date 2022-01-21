@@ -7,9 +7,13 @@ from pathlib import Path
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
+# Media is saved in ROOT_DIR
+APPS_DIR = ROOT_DIR # / "dezumi"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -139,6 +143,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+# MEDIA
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+MEDIA_ROOT = str(APPS_DIR / "media")
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+MEDIA_URL = "/media/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-root
