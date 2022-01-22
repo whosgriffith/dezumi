@@ -21,7 +21,7 @@ class UserAdmin(auth_admin.UserAdmin):
                     "picture",
                     "level",
                     "experience",
-                    "title",
+                    "featured_title",
                     "is_verified",
                 ),
             },
