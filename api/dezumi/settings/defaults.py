@@ -40,11 +40,13 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "rest_framework",
     "rest_framework.authtoken",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    "dj_rest_auth",
+    'dj_rest_auth.registration',
     "corsheaders",
     "django_countries",
 ]
@@ -54,6 +56,31 @@ LOCAL_APPS = [
     "dezumi.achievements.apps.AchievementsConfig",
     "dezumi.others.apps.OthersConfig",
 ]
+
+# dj-rest-auth and django-allauth configuration 
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'dezumi.users.serializers.CustomRegisterSerializer',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    # allauth specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # Needed to login by username in Django admin, regardless of allauth
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Used to fix Django Admin Panel not showing
 # https://stackoverflow.com/questions/9736975/django-admin-doesnotexist-at-admin
