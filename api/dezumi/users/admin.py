@@ -3,12 +3,28 @@ from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
+from dezumi.users.models.User import UserAchievement, Follow
+
 User = get_user_model()
 
+
+class UserAchievementsInline(admin.TabularInline):
+    model = UserAchievement
+    extra = 1
+
+
+class FollowsInline(admin.TabularInline):
+    model = Follow
+    extra = 1
+    fk_name = "follower"
+
+
+admin.site.register(Follow)
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
 
+    inlines = (UserAchievementsInline, FollowsInline)
     readonly_fields = ['total_likes', 'total_followers', 'total_friends', 'level', 'experience']
     fieldsets = (
         (None, {"fields": ("username", "password")}),
