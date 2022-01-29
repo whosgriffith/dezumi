@@ -21,6 +21,7 @@ class User(AbstractUser):
 
     total_likes = models.IntegerField(default=0)
     total_followers = models.IntegerField(default=0)
+    total_followed = models.IntegerField(default=0)
     total_friends = models.IntegerField(default=0)
 
     picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
