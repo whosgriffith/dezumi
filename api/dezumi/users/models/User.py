@@ -31,8 +31,10 @@ class User(AbstractUser):
     gins = models.IntegerField(default=0, help_text='Gin is the currency that can be used in the store.')
     featured_title = models.ForeignKey(Achievement, on_delete=models.SET_NULL, null=True, blank=True, related_name='featured_title')
     achievements = models.ManyToManyField(Achievement, through='UserAchievement', blank=True)
+
     # https://adamj.eu/tech/2021/02/26/django-check-constraints-prevent-self-following/
     follows = models.ManyToManyField('self', through='Follow', blank=True, symmetrical=False)
+    likes = models.ManyToManyField('self', through='Like', blank=True, symmetrical=False, related_name='userslikes')
 
     is_verified = models.BooleanField(default=False, help_text='Verifies the authenticity of an account.')
     is_private = models.BooleanField(default=False, help_text='A private account only can be seen by friends.')
@@ -54,11 +56,10 @@ class Follow(TimeStampBase):
     Represents each follow by a user
     """
 
-    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed')
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
+    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed')
 
     class Meta:
-        # 
         constraints = [
             # Prevents more than one follow from one user to another (Ex: 1:Foo -> Bar, 2:Foo -> Bar)
             models.UniqueConstraint(
@@ -71,3 +72,33 @@ class Follow(TimeStampBase):
                 check=~models.Q(follower=models.F("followed")),
             ),
         ]
+
+    def __str__(self):
+        return f'{self.follower} follows {self.followed}'
+
+
+class Like(TimeStampBase):
+    """
+    Join table between User and User Model
+    Represents each follow by a user
+    """
+
+    liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liker')
+    liked = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
+
+    class Meta:
+        constraints = [
+            # Prevents more than one like from one user to another (Ex: 1:Foo -> Bar, 2:Foo -> Bar)
+            models.UniqueConstraint(
+                name="%(app_label)s_%(class)s_unique_relationships",
+                fields=["liked", "liker"],
+            ),
+            # Prevents the user from giving a like to his own profile
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_prevent_self_follow",
+                check=~models.Q(liker=models.F("liked")),
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.liker} likes {self.liked}'
