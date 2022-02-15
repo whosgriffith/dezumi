@@ -34,7 +34,7 @@ class UserAdmin(auth_admin.UserAdmin):
     readonly_fields = ['total_likes', 'total_followers', 'total_friends', 'level', 'experience']
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "birth_date", "country", "email")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "birth_date", "country", "gender", "email")}),
         (
             _("Profile"),
             {

@@ -6,7 +6,7 @@ from django_countries.fields import CountryField
 
 from dezumi.achievements.models.Achievement import Achievement
 from dezumi.others.constants import GENDER
-from dezumi.others.models import TimeStampBase
+from dezumi.others.models.Utils import TimeStampBase
 
 class User(AbstractUser):
     """
