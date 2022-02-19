@@ -33,15 +33,15 @@ class Person(models.Model):
         verbose_name_plural = "people"
 
 
-class PersonMedia(models.Model):
+class PersonVisual(models.Model):
     """
-    Model for Person media.
+    Model for Person images/videos/gifs and other media.
     """
-    file = models.FileField(upload_to='people')
-    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='media')
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='visual')
+    file = models.FileField(upload_to='people/visual/')
 
     class Meta:
-        verbose_name_plural = "people media"
+        verbose_name_plural = "people visuals"
 
 
 class Character(models.Model):
@@ -69,12 +69,12 @@ class Character(models.Model):
         return self.full_name
 
 
-class CharacterMedia(models.Model):
+class CharacterVisual(models.Model):
     """
-    Model for Character media.
+    Model for Character images/videos/gifs and other media.
     """
-    file = models.FileField(upload_to='people')
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='media')
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='visual')
+    file = models.FileField(upload_to='characters/visual/')
 
     class Meta:
-        verbose_name_plural = "character media"
+        verbose_name_plural = "character visuals"

@@ -24,7 +24,7 @@ class User(AbstractUser):
     total_followed = models.IntegerField(default=0)
     total_friends = models.IntegerField(default=0)
 
-    picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    picture = models.ImageField(upload_to='users/profile_pictures/', null=True, blank=True)
 
     level = models.IntegerField(default=0)
     experience = models.IntegerField(default=0)

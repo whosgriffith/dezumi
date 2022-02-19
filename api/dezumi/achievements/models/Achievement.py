@@ -10,7 +10,7 @@ class Achievement(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    badge = models.ImageField(upload_to='badges/', blank=True, null=True)
+    badge = models.ImageField(upload_to='achievements/badges/', blank=True, null=True)
 
     def __str__(self):
         return self.title

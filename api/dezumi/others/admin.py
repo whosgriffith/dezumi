@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from dezumi.others.models.Individuals import Person, PersonMedia, Character, CharacterMedia
+from dezumi.others.models.Individuals import Person, PersonVisual, Character, CharacterVisual
 
-@admin.register(PersonMedia)
+@admin.register(PersonVisual)
 class PersonMediaAdmin(admin.ModelAdmin):
 
     fieldsets = (
@@ -16,15 +16,15 @@ class PersonMediaAdmin(admin.ModelAdmin):
     def full_name(self, obj):
         return obj.person
 
-class PersonMediaInline(admin.TabularInline):
-    model = PersonMedia
+class PersonVisualInline(admin.TabularInline):
+    model = PersonVisual
     extra = 1
 
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
 
-    inlines = (PersonMediaInline,)
+    inlines = (PersonVisualInline,)
     readonly_fields = ['total_likes', 'total_followers', 'total_favorites']
     fieldsets = (
         (_("Personal info"), {"fields": ("first_name", "last_name", "birth_date", "country", "gender")}),
@@ -43,8 +43,8 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ["first_name", "last_name"]
 
 
-@admin.register(CharacterMedia)
-class CharacterMediaAdmin(admin.ModelAdmin):
+@admin.register(CharacterVisual)
+class CharacteVisualAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_("Personal info"), {"fields": ("character",)}),
@@ -54,15 +54,15 @@ class CharacterMediaAdmin(admin.ModelAdmin):
     search_fields = ["character",]
 
 
-class CharacterMediaInline(admin.TabularInline):
-    model = CharacterMedia
+class CharacterVisualInline(admin.TabularInline):
+    model = CharacterVisual
     extra = 1
 
 
 @admin.register(Character)
 class CharacterAdmin(admin.ModelAdmin):
 
-    inlines = (CharacterMediaInline,)
+    inlines = (CharacterVisualInline,)
     readonly_fields = ['total_likes', 'total_dislikes', 'total_favorites']
     fieldsets = (
         (_("Personal info"), {"fields": ("full_name", "age", "height", "gender")}),
