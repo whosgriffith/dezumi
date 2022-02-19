@@ -7,6 +7,8 @@ from django_countries.fields import CountryField
 from dezumi.achievements.models.Achievement import Achievement
 from dezumi.others.constants import GENDER
 from dezumi.others.models.Utils import TimeStampBase
+from dezumi.shows.models.Show import Show
+
 
 class User(AbstractUser):
     """
@@ -38,6 +40,11 @@ class User(AbstractUser):
 
     is_verified = models.BooleanField(default=False, help_text='Verifies the authenticity of an account.')
     is_private = models.BooleanField(default=False, help_text='A private account only can be seen by friends.')
+
+    # User - Shows 
+    show_likes = models.ManyToManyField(Show, blank=True, related_name='show_likes')
+    show_dislikes = models.ManyToManyField(Show, blank=True, related_name='show_dislikes')
+    show_favorites = models.ManyToManyField(Show, blank=True, related_name='show_favorites')
 
 
 class UserAchievement(TimeStampBase):

@@ -52,9 +52,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "dezumi.users.apps.UsersConfig",
     "dezumi.achievements.apps.AchievementsConfig",
+    "dezumi.shows.apps.ShowsConfig",
     "dezumi.others.apps.OthersConfig",
+    "dezumi.users.apps.UsersConfig",
 ]
 
 # dj-rest-auth and django-allauth configuration 
@@ -125,7 +126,7 @@ WSGI_APPLICATION = 'dezumi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
