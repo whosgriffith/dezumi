@@ -59,6 +59,16 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
         (
+            _("Shows"),
+            {
+                "fields": (
+                    "shows_likes",
+                    "shows_dislikes",
+                    "shows_favorites",
+                ),
+            },
+        ),
+        (
             _("Permissions"),
             {
                 "fields": (

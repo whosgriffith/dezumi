@@ -3,25 +3,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# ANNOUNCED = 0
-# UPCOMING = 1
-# FINISHED = 2
-# SHOW_STATUS = [
-#     (ANNOUNCED, _('Announced')),
-#     (UPCOMING, _('Upcoming')),
-#     (FINISHED, _('Finished')),
-# ]
-
-
-
-class ShowType(models.Model):
-    """
-    Model for Show types.
-    """
-    type = models.CharField(max_length=60)
-
-    class Meta:
-        verbose_name_plural = "show types"
+from dezumi.shows.constants import SHOW_TYPES
 
 
 class ShowVisual(models.Model):
@@ -29,6 +11,9 @@ class ShowVisual(models.Model):
     Model for Show images/videos/gifs and other media.
     """
     file = models.FileField(upload_to='shows/visual/')
+
+    def __str__(self):
+        return self.file.name
 
     class Meta:
         verbose_name_plural = "shows visuals"
@@ -40,8 +25,11 @@ class Studio(models.Model):
     """
 
     name = models.CharField(max_length=60)
-    established = models.DateTimeField(null=True, blank=True)
+    established = models.DateField(null=True, blank=True)
     logo = models.ImageField(blank=True, null=True, upload_to='studio/visuals/')
+
+    def __str__(self):
+        return self.name
 
 
 class Show(models.Model):
@@ -59,7 +47,7 @@ class Show(models.Model):
     release_date = models.DateField(null=True, blank=True)
     episodes = models.PositiveIntegerField(default=0)
     duration = models.PositiveIntegerField(default=0)
-    show_type = models.ForeignKey(ShowType, on_delete=models.SET_NULL, null=True, blank=True)
+    show_type = models.CharField(choices=SHOW_TYPES, max_length=4, null=True, blank=True)
 
     visuals = models.ManyToManyField(ShowVisual, related_name="visuals")
 
@@ -74,3 +62,6 @@ class Show(models.Model):
     total_not_recommended = models.PositiveBigIntegerField(default=0)
 
     dezumi_score = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.title

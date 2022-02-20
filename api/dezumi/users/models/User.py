@@ -42,9 +42,9 @@ class User(AbstractUser):
     is_private = models.BooleanField(default=False, help_text='A private account only can be seen by friends.')
 
     # User - Shows 
-    show_likes = models.ManyToManyField(Show, blank=True, related_name='show_likes')
-    show_dislikes = models.ManyToManyField(Show, blank=True, related_name='show_dislikes')
-    show_favorites = models.ManyToManyField(Show, blank=True, related_name='show_favorites')
+    shows_likes = models.ManyToManyField(Show, blank=True, related_name='show_likes')
+    shows_dislikes = models.ManyToManyField(Show, blank=True, related_name='show_dislikes')
+    shows_favorites = models.ManyToManyField(Show, blank=True, related_name='show_favorites')
 
 
 class UserAchievement(TimeStampBase):
