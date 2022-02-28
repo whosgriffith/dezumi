@@ -3,34 +3,69 @@ from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from dezumi.users.models.User import Follow, Like, UserAchievement
+from dezumi.users.models.UserInteractions import UserFollow, UserLike, UserInteraction
+from dezumi.users.models.User import UserAchievement
 
 User = get_user_model()
 
 
+admin.site.register(UserAchievement)
 class UserAchievementsInline(admin.TabularInline):
     model = UserAchievement
     extra = 1
 
 
-admin.site.register(Follow)
-class FollowsInline(admin.TabularInline):
-    model = Follow
+admin.site.register(UserFollow)
+class UserFollowsInline(admin.TabularInline):
+    model = UserFollow
     extra = 1
-    fk_name = "follower"
 
 
-admin.site.register(Like)
-class LikesInline(admin.TabularInline):
-    model = Like
+admin.site.register(UserLike)
+class UserLikesInline(admin.TabularInline):
+    model = UserLike
     extra = 1
-    fk_name = "liker"
+
+
+class UserInteractionsInline(admin.TabularInline):
+    model = UserInteraction
+    extra = 1 
+
+
+class UserInteractionAdmin(admin.ModelAdmin):
+
+    inlines = (UserFollowsInline, UserLikesInline)
+    readonly_fields = ['user',]
+    fieldsets = (
+        (
+            _("User - Shows"),
+            {
+                "fields": (
+                    "shows_likes",
+                    "shows_dislikes",
+                    "shows_favorites",
+                ),
+            },
+        ),
+        (
+            _("User - Person"),
+            {
+                "fields": (
+                    "people_follows",
+                    "people_likes",
+                    "people_favorites",
+                ),
+            },
+        ),
+    )
+    list_display = ["user",]
+    search_fields = ["user",]
 
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
 
-    inlines = (UserAchievementsInline, FollowsInline, LikesInline)
+    inlines = (UserAchievementsInline, UserInteractionsInline)
     readonly_fields = ['total_likes', 'total_followers', 'total_friends', 'level', 'experience']
     fieldsets = (
         (None, {"fields": ("username", "password")}),
@@ -55,16 +90,6 @@ class UserAdmin(auth_admin.UserAdmin):
                     "total_likes",
                     "total_followers",
                     "total_friends",
-                ),
-            },
-        ),
-        (
-            _("Shows"),
-            {
-                "fields": (
-                    "shows_likes",
-                    "shows_dislikes",
-                    "shows_favorites",
                 ),
             },
         ),

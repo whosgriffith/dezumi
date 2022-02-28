@@ -1,5 +1,4 @@
 """ User related models """
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_countries.fields import CountryField
@@ -7,8 +6,6 @@ from django_countries.fields import CountryField
 from dezumi.achievements.models.Achievement import Achievement
 from dezumi.others.constants import GENDER
 from dezumi.others.models.Utils import TimeStampBase
-from dezumi.shows.models.Show import Show
-
 
 class User(AbstractUser):
     """
@@ -21,11 +18,6 @@ class User(AbstractUser):
     country = CountryField(null=True, blank=True, blank_label='Select country')
     gender = models.CharField(choices=GENDER, max_length=6, null=True, blank=True)
 
-    total_likes = models.IntegerField(default=0)
-    total_followers = models.IntegerField(default=0)
-    total_followed = models.IntegerField(default=0)
-    total_friends = models.IntegerField(default=0)
-
     picture = models.ImageField(upload_to='users/profile_pictures/', null=True, blank=True)
 
     level = models.IntegerField(default=0)
@@ -34,17 +26,14 @@ class User(AbstractUser):
     featured_title = models.ForeignKey(Achievement, on_delete=models.SET_NULL, null=True, blank=True, related_name='featured_title')
     achievements = models.ManyToManyField(Achievement, through='UserAchievement', blank=True)
 
-    # https://adamj.eu/tech/2021/02/26/django-check-constraints-prevent-self-following/
-    follows = models.ManyToManyField('self', through='Follow', blank=True, symmetrical=False)
-    likes = models.ManyToManyField('self', through='Like', blank=True, symmetrical=False, related_name='userslikes')
-
     is_verified = models.BooleanField(default=False, help_text='Verifies the authenticity of an account.')
     is_private = models.BooleanField(default=False, help_text='A private account only can be seen by friends.')
 
-    # User - Shows 
-    shows_likes = models.ManyToManyField(Show, blank=True, related_name='show_likes')
-    shows_dislikes = models.ManyToManyField(Show, blank=True, related_name='show_dislikes')
-    shows_favorites = models.ManyToManyField(Show, blank=True, related_name='show_favorites')
+    #? --- User Statistics --- ?#
+    total_likes = models.IntegerField(default=0)
+    total_followers = models.IntegerField(default=0)
+    total_followed = models.IntegerField(default=0)
+    total_friends = models.IntegerField(default=0)
 
 
 class UserAchievement(TimeStampBase):
@@ -55,57 +44,3 @@ class UserAchievement(TimeStampBase):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
-
-
-class Follow(TimeStampBase):
-    """
-    Join table between User and User Model
-    Represents each follow by a user
-    """
-
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
-    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followed')
-
-    class Meta:
-        constraints = [
-            # Prevents more than one follow from one user to another (Ex: 1:Foo -> Bar, 2:Foo -> Bar)
-            models.UniqueConstraint(
-                name="%(app_label)s_%(class)s_unique_relationships",
-                fields=["followed", "follower"],
-            ),
-            # Prevents the user from following himself
-            models.CheckConstraint(
-                name="%(app_label)s_%(class)s_prevent_self_follow",
-                check=~models.Q(follower=models.F("followed")),
-            ),
-        ]
-
-    def __str__(self):
-        return f'{self.follower} follows {self.followed}'
-
-
-class Like(TimeStampBase):
-    """
-    Join table between User and User Model
-    Represents each follow by a user
-    """
-
-    liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liker')
-    liked = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
-
-    class Meta:
-        constraints = [
-            # Prevents more than one like from one user to another (Ex: 1:Foo -> Bar, 2:Foo -> Bar)
-            models.UniqueConstraint(
-                name="%(app_label)s_%(class)s_unique_relationships",
-                fields=["liked", "liker"],
-            ),
-            # Prevents the user from giving a like to his own profile
-            models.CheckConstraint(
-                name="%(app_label)s_%(class)s_prevent_self_follow",
-                check=~models.Q(liker=models.F("liked")),
-            ),
-        ]
-
-    def __str__(self):
-        return f'{self.liker} likes {self.liked}'
