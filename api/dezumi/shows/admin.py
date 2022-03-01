@@ -21,6 +21,7 @@ class ShowAdmin(admin.ModelAdmin):
                     "synopsis",
                     "airing",
                     "season",
+                    "characters",
                     "studio",
                     "release_date",
                     "episodes",

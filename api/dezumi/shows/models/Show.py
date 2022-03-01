@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from dezumi.shows.constants import SHOW_TYPES
-
+from dezumi.others.models.Individuals import Character
 
 class ShowVisual(models.Model):
     """
@@ -48,7 +48,7 @@ class Show(models.Model):
     episodes = models.PositiveIntegerField(default=0)
     duration = models.PositiveIntegerField(default=0)
     show_type = models.CharField(choices=SHOW_TYPES, max_length=4, null=True, blank=True)
-
+    characters = models.ManyToManyField(Character, blank=True)
     visuals = models.ManyToManyField(ShowVisual, related_name="visuals")
 
     total_likes = models.PositiveBigIntegerField(default=0)
