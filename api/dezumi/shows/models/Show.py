@@ -4,7 +4,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from dezumi.shows.constants import SHOW_TYPES
-from dezumi.others.models.Individuals import Character
+from dezumi.others.models.Individuals import Character, Person
+
 
 class ShowVisual(models.Model):
     """
@@ -49,6 +50,7 @@ class Show(models.Model):
     duration = models.PositiveIntegerField(default=0)
     show_type = models.CharField(choices=SHOW_TYPES, max_length=4, null=True, blank=True)
     characters = models.ManyToManyField(Character, blank=True)
+    people = models.ManyToManyField(Person, through='PersonShow', blank=True)
     visuals = models.ManyToManyField(ShowVisual, related_name="visuals")
 
     total_likes = models.PositiveBigIntegerField(default=0)
@@ -65,3 +67,16 @@ class Show(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PersonShow(models.Model):
+    """
+    Through table for Person and Show Model
+    Add the position and character (if applies) with which the person relates to
+    """
+
+    show = models.ForeignKey(Show, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+
+    position = models.CharField(max_length=60)
+    character = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True, blank=True)
