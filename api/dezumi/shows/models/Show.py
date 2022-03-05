@@ -49,9 +49,9 @@ class Show(models.Model):
     episodes = models.PositiveIntegerField(default=0)
     duration = models.PositiveIntegerField(default=0)
     show_type = models.CharField(choices=SHOW_TYPES, max_length=4, null=True, blank=True)
-    characters = models.ManyToManyField(Character, null=True, blank=True)
-    people = models.ManyToManyField(Person, through='PersonShow', null=True, blank=True)
-    visuals = models.ManyToManyField(ShowVisual, related_name="visuals", null=True, blank=True)
+    characters = models.ManyToManyField(Character)
+    people = models.ManyToManyField(Person, through='PersonShow')
+    visuals = models.ManyToManyField(ShowVisual, related_name="visuals")
 
     total_likes = models.PositiveBigIntegerField(default=0)
     total_favorites = models.PositiveBigIntegerField(default=0)

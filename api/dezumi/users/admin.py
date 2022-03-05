@@ -110,3 +110,10 @@ class UserAdmin(auth_admin.UserAdmin):
     )
     list_display = ["username", "name", "level", "gins", "is_verified", "is_private"]
     search_fields = ["username", "name", "email", "first_name", "last_name"]
+
+    def save_model(self, request, obj, form, change):
+        """
+        When user is created in the admin panel, autocomplete the profile name with the username
+        """
+        obj.name = obj.username
+        super().save_model(request, obj, form, change)
