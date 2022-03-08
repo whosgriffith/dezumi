@@ -7,6 +7,7 @@ from dezumi.shows.models.Show import Show
 from dezumi.users.models.User import User
 from dezumi.others.models.Individuals import Person
 from dezumi.others.models.Utils import TimeStampBase
+from dezumi.social.models.Post import Post
 
 class UserInteraction(models.Model):
     """
@@ -30,6 +31,9 @@ class UserInteraction(models.Model):
     people_follows = models.ManyToManyField(Person, blank=True, related_name='person_follows')
     people_likes = models.ManyToManyField(Person, blank=True, related_name='person_likes')
     people_favorites = models.ManyToManyField(Person, blank=True, related_name='person_favorites')
+
+    # User - Posts 
+    posts_likes = models.ManyToManyField(Post, blank=True, related_name='post_likes')
 
     def __str__(self):
         return self.user.username

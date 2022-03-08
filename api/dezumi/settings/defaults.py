@@ -57,6 +57,7 @@ LOCAL_APPS = [
     "dezumi.shows.apps.ShowsConfig",
     "dezumi.others.apps.OthersConfig",
     "dezumi.users.apps.UsersConfig",
+    "dezumi.social.apps.SocialConfig",
 ]
 
 # dj-rest-auth and django-allauth configuration 

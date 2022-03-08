@@ -1,4 +1,4 @@
-"""" Users Serializers """
+"""" Achievements Serializers """
 
 from rest_framework import serializers
 
