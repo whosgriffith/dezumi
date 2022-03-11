@@ -1,9 +1,10 @@
 from django.db import models
 
 
-class TimeStampBase(models.Model):
+class BaseModel(models.Model):
     """
-    Base model for models with timestamp
+    Base model
+    With timestamp
     """
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

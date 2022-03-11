@@ -4,9 +4,9 @@ from django.db import models
 
 from dezumi.users.models import User
 from dezumi.shows.models.Show import Show
-from dezumi.others.models import TimeStampBase
+from dezumi.others.models import BaseModel
 
-class Post(TimeStampBase):
+class Post(BaseModel):
     """
     Post Model
     """

@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 
 from dezumi.achievements.models.Achievement import Achievement
 from dezumi.others.constants import GENDER
-from dezumi.others.models.Utils import TimeStampBase
+from dezumi.others.models.Utils import BaseModel
 
 class User(AbstractUser):
     """
@@ -36,7 +36,7 @@ class User(AbstractUser):
     total_friends = models.IntegerField(default=0)
 
 
-class UserAchievement(TimeStampBase):
+class UserAchievement(BaseModel):
     """
     Join table between User and Achievement Model
     Represents each achievement unlocked by a user

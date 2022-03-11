@@ -6,7 +6,7 @@ from django.dispatch import receiver
 from dezumi.shows.models.Show import Show
 from dezumi.users.models.User import User
 from dezumi.others.models.Individuals import Person
-from dezumi.others.models.Utils import TimeStampBase
+from dezumi.others.models.Utils import BaseModel
 from dezumi.social.models.Post import Post
 
 class UserInteraction(models.Model):
@@ -39,7 +39,7 @@ class UserInteraction(models.Model):
         return self.user.username
 
 
-class UserFollow(TimeStampBase):
+class UserFollow(BaseModel):
     """
     Join table between User and User Model
     Represents each follow by a user
@@ -76,7 +76,7 @@ def save_user_profile(sender, instance, **kwargs):
     instance.interactions.save()
 
 
-class UserLike(TimeStampBase):
+class UserLike(BaseModel):
     """
     Join table between User and User Model
     Represents each follow by a user
