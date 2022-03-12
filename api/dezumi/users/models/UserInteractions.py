@@ -9,6 +9,7 @@ from dezumi.others.models.Individuals import Person
 from dezumi.others.models.Utils import BaseModel
 from dezumi.social.models.Post import Post
 
+
 class UserInteraction(models.Model):
     """
     Model for user interactions.
@@ -21,7 +22,7 @@ class UserInteraction(models.Model):
     users_follows = models.ManyToManyField('self', through='UserFollow', blank=True, symmetrical=False, related_name='user_follows')
     users_likes = models.ManyToManyField('self', through='UserLike', blank=True, symmetrical=False, related_name='user_likes')
 
-    # User - Shows 
+    # User - Shows
     shows_likes = models.ManyToManyField(Show, blank=True, related_name='show_likes')
     shows_dislikes = models.ManyToManyField(Show, blank=True, related_name='show_dislikes')
     shows_favorites = models.ManyToManyField(Show, blank=True, related_name='show_favorites')
@@ -32,7 +33,7 @@ class UserInteraction(models.Model):
     people_likes = models.ManyToManyField(Person, blank=True, related_name='person_likes')
     people_favorites = models.ManyToManyField(Person, blank=True, related_name='person_favorites')
 
-    # User - Posts 
+    # User - Posts
     posts_likes = models.ManyToManyField(Post, blank=True, related_name='post_likes')
 
     def __str__(self):
@@ -70,6 +71,7 @@ class UserFollow(BaseModel):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserInteraction.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
